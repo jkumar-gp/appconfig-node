@@ -1,13 +1,15 @@
-//const AWS = require('aws-sdk');
+const express = require('express');
+const app = express();
+
+
+// this is with ecs agent
+const getConfig = require('./config');
+const getFeature = require('./feature');
+
+//not needed for agent
 const {  AppConfigDataClient, GetLatestConfigurationCommand, StartConfigurationSessionCommand } = require("@aws-sdk/client-appconfigdata");
-
-
 const client = new AppConfigDataClient({ region: 'us-east-1' });
 
-
-const express = require('express');
-//AWS.config.update({ region: 'us-east-1' });
-const app = express();
 let reusableToken = "";
 
 
@@ -38,23 +40,7 @@ async function getContractorConfig() {
       }
       return response.Configuration.transformToString();
 } 
-async function getFeature(name, features) {
-    let featureArray = [];
-    featureArray.push(features);
-    const feature=featureArray[0][name];
-    if (feature) {
-      if (feature.enabled) {
-        return true;
-      }
-    }
-    if (!feature) {
-    console.error(
-      `There is no feature named "${name}"`,
-    );
-      return false;
-    }
-    return false;
-  }
+
 
 
 app.get('/config/:id?',async(req,res)=>{
@@ -70,7 +56,11 @@ app.get('/config/:id?',async(req,res)=>{
           if(configId){
             flag = await getFeature(configId, config);
           }
+        
           res.json({"config " : config , configId : flag });
+
+          
+
        } catch (error) {
         console.error('Error fetching configuration:', error);
         res.status(500).json({ error: 'Internal server error' });
@@ -78,7 +68,41 @@ app.get('/config/:id?',async(req,res)=>{
   
 
 })
-const PORT = process.env.PORT || 3000;
+
+app.get('/',async(req,res)=>{
+
+  res.send("Hello World")
+
+});
+
+
+app.get('/ecs/config/:id?',async(req,res)=>{
+  var configId = req.params['id'] ;
+
+  var flag;
+  try {
+    const localConfigString = await getConfig.local();
+    const globalConfigString = await getConfig.global();
+  
+    
+    if(configId){
+      flag = await getFeature(configId, localConfigString);
+    }
+    if(flag && configId == "isError"){
+      console.error('ERROR  There is an error in the configuration', error);
+    }
+    console.info('successfully logged the response');
+    res.json({"locaConfig " : localConfigString , "globalConfig ": globalConfigString, configId : flag });
+  }catch (error) {
+    console.error('Error fetching configuration:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
+
+});
+
+
+const PORT = process.env.PORT || 80;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
