@@ -89,7 +89,7 @@ app.get('/ecs/config/:id',async(req,res)=>{
       console.error('ERROR  There is an error in the configuration', error);
     }
     console.info('successfully logged the response');
-    res.json({ "${configId}" : flag });
+    res.json({ "`${configId}`" : flag });
   
   }catch (error) {
     console.error('Error fetching configuration:', error);
