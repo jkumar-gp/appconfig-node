@@ -83,7 +83,7 @@ app.get('/ecs/config/:id?',async(req,res)=>{
   try {
     const localConfigString = await getConfig.local();
     const globalConfigString = await getConfig.global();
-    const env = '${process.env.APPCONFIG_ENV}'
+    const env = `${process.env.APPCONFIG_ENV}`;
     
     if(configId){
       flag = await getFeature(configId, localConfigString ,env );
