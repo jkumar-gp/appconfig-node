@@ -83,10 +83,10 @@ app.get('/ecs/config/:id?',async(req,res)=>{
   try {
     const localConfigString = await getConfig.local();
     const globalConfigString = await getConfig.global();
-    const env = `${process.env.APPCONFIG_ENV}`;
+   
     
     if(configId){
-      flag = await getFeature(configId, localConfigString ,env );
+      flag = await getFeature(configId, localConfigString );
     }
     if(flag && configId == "isError"){
       console.error('ERROR  There is an error in the configuration', error);
