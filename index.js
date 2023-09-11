@@ -97,7 +97,7 @@ app.get('/ecs/config/:id?',async(req,res)=>{
     console.error('Error fetching configuration:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-
+ 
 
 });
 
