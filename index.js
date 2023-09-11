@@ -76,23 +76,36 @@ app.get('/',async(req,res)=>{
 });
 
 
-app.get('/ecs/config/:id?',async(req,res)=>{
+app.get('/ecs/config/:id',async(req,res)=>{
   var configId = req.params['id'] ;
 
   var flag;
   try {
-    const localConfigString = await getConfig.local();
-    const globalConfigString = await getConfig.global();
-   
-    
     if(configId){
+      const localConfigString = await getConfig.local();
       flag = await getFeature(configId, localConfigString );
     }
     if(flag && configId == "isError"){
       console.error('ERROR  There is an error in the configuration', error);
     }
     console.info('successfully logged the response');
-    res.json({"locaConfig " : localConfigString , "globalConfig ": globalConfigString, configId : flag });
+    res.json({ "${configId}" : flag });
+  
+  }catch (error) {
+    console.error('Error fetching configuration:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+ 
+
+});
+app.get('/ecs/config',async(req,res)=>{
+  
+
+  var flag;
+  try {
+    const localConfigString = await getConfig.local();
+    const globalConfigString = await getConfig.global();
+    res.json({"locaConfig " : localConfigString , "globalConfig ": globalConfigString});
   }catch (error) {
     console.error('Error fetching configuration:', error);
     res.status(500).json({ error: 'Internal server error' });
