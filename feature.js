@@ -2,9 +2,9 @@
 async function getFeature(name, features) {
  
   var env = `${process.env.APPCONFIG_ENV}`;
-
+  console.log('env ::',env);
   let featureArray = [];
-  
+
   if( !env ){
     let envConfigArray = [];
     envConfigArray.push(features)

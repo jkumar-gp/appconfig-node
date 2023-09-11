@@ -15,31 +15,31 @@ let reusableToken = "";
 
 
 
-async function getContractorAppConfigToken(){ 
+// async function getContractorAppConfigToken(){ 
 
-    const input = { // StartConfigurationSessionRequest
-        ApplicationIdentifier: 'tsro59v',
-        EnvironmentIdentifier: 'ewbsrv9',
-        ConfigurationProfileIdentifier: '27qklqs',
-      };
-      const sessionCommand = new StartConfigurationSessionCommand(input);
-      const sessionToken = await client.send(sessionCommand);
-      return sessionToken.InitialConfigurationToken || "";
+//     const input = { // StartConfigurationSessionRequest
+//         ApplicationIdentifier: 'tsro59v',
+//         EnvironmentIdentifier: 'ewbsrv9',
+//         ConfigurationProfileIdentifier: '27qklqs',
+//       };
+//       const sessionCommand = new StartConfigurationSessionCommand(input);
+//       const sessionToken = await client.send(sessionCommand);
+//       return sessionToken.InitialConfigurationToken || "";
 
-}
-async function getContractorConfig() {
-    if (!reusableToken) {
-        reusableToken = await getContractorAppConfigToken();
-      }
-      const command = new GetLatestConfigurationCommand({
-        ConfigurationToken: reusableToken,
-      });
-      const response = await client.send(command);
-      if(response != null){
-        reusableToken = response.NextPollConfigurationToken
-      }
-      return response.Configuration.transformToString();
-} 
+// }
+// async function getContractorConfig() {
+//     if (!reusableToken) {
+//         reusableToken = await getContractorAppConfigToken();
+//       }
+//       const command = new GetLatestConfigurationCommand({
+//         ConfigurationToken: reusableToken,
+//       });
+//       const response = await client.send(command);
+//       if(response != null){
+//         reusableToken = response.NextPollConfigurationToken
+//       }
+//       return response.Configuration.transformToString();
+// } 
 
 
 
