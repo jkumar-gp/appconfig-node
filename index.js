@@ -43,31 +43,31 @@ async function getContractorConfig() {
 
 
 
-app.get('/config/:id?',async(req,res)=>{
-    try {
-         var configId = req.params['id'] ;
+// app.get('/config/:id?',async(req,res)=>{
+//     try {
+//          var configId = req.params['id'] ;
          
-          var config;
-          var flag;
-          var configString=  await getContractorConfig();
-          if(configString){
-            config = JSON.parse(configString); 
-           }
-          if(configId){
-            flag = await getFeature(configId, config);
-          }
+//           var config;
+//           var flag;
+//           var configString=  await getContractorConfig();
+//           if(configString){
+//             config = JSON.parse(configString); 
+//            }
+//           if(configId){
+//             flag = await getFeature(configId, config);
+//           }
         
-          res.json({"config " : config , configId : flag });
+//           res.json({"config " : config , configId : flag });
 
           
 
-       } catch (error) {
-        console.error('Error fetching configuration:', error);
-        res.status(500).json({ error: 'Internal server error' });
-      }
+//        } catch (error) {
+//         console.error('Error fetching configuration:', error);
+//         res.status(500).json({ error: 'Internal server error' });
+//       }
   
 
-})
+// })
 
 app.get('/',async(req,res)=>{
 
@@ -83,10 +83,10 @@ app.get('/ecs/config/:id?',async(req,res)=>{
   try {
     const localConfigString = await getConfig.local();
     const globalConfigString = await getConfig.global();
-  
+    const env = '${process.env.APPCONFIG_ENV}'
     
     if(configId){
-      flag = await getFeature(configId, localConfigString);
+      flag = await getFeature(configId, localConfigString ,env );
     }
     if(flag && configId == "isError"){
       console.error('ERROR  There is an error in the configuration', error);

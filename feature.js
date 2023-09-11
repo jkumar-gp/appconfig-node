@@ -1,7 +1,18 @@
 'use strict';
-async function getFeature(name, features) {
+async function getFeature(name, features , env) {
   let featureArray = [];
-  featureArray.push(features);
+  if( !env ){
+    let envConfigArray = [];
+    envConfigArray.push(features)
+    const jsonConfig =  envConfigArray[0][env]
+    console.log(' config json :: ',jsonConfig);
+    featureArray.push(jsonConfig);
+  }else{
+    console.log(' env is not passed :: ');
+    featureArray.push(features);
+  }
+
+ 
   const feature=featureArray[0][name];
   if (feature) {
     if (feature.enabled) {
