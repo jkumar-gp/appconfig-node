@@ -90,8 +90,7 @@ app.get('/ecs/config/:id',async(req,res)=>{
     }
     console.info('successfully logged the response');
     const responseObj = {
-      configId: flag,
-      // Other key-value pairs if needed
+      [configId]: flag,
     };
     res.json(JSON.stringify(responseObj));
   
