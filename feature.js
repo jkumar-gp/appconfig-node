@@ -1,11 +1,11 @@
 'use strict';
 async function getFeature(name, features) {
  
-  var env = `${process.env.APPCONFIG_ENV}`;
+  const env = `${process.env.APPCONFIG_ENV}`;
   console.log('env ::',env);
   let featureArray = [];
 
-  if( !env ){
+  if( env ){
     let envConfigArray = [];
     envConfigArray.push(features)
     const jsonConfig =  envConfigArray[0][env]
